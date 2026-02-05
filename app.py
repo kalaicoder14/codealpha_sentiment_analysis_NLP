@@ -7,7 +7,14 @@ import pandas as pd
 
 # ---------------- Load Environment ----------------
 load_dotenv()
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+api_key = os.getenv("GROQ_API_KEY") or st.secrets.get("GROQ_API_KEY")
+
+if not api_key:
+    st.error("❌ GROQ API Key not found. Add it to .env (local) or Streamlit Secrets (cloud).")
+    st.stop()
+
+client = Groq(api_key=api_key)
 
 # ---------------- Sentiment Function ----------------
 def basic_sentiment(text):
@@ -22,7 +29,7 @@ def basic_sentiment(text):
 # ---------------- Groq Emotion Analysis ----------------
 def analyze_with_groq(text):
     prompt = f"""
-Analyze the following text and give:
+Analyze the following text and provide:
 1. Sentiment (Positive / Negative / Neutral)
 2. Emotion (Joy, Anger, Sadness, Fear, Surprise, Neutral)
 
@@ -40,14 +47,10 @@ Text:
 st.set_page_config(page_title="Sentiment Analysis", page_icon="💬")
 st.title("💬 Sentiment Analysis App")
 
-# --------- TYPE SELECTION (as requested) ----------
+# --------- Data Source Type Selection ----------
 data_type = st.selectbox(
     "Select Data Source Type",
-    [
-        "Amazon Reviews",
-        "Social Media",
-        "News Sites"
-    ]
+    ["Amazon Reviews", "Social Media", "News Sites"]
 )
 
 # ---------------- Amazon Reviews ----------------
