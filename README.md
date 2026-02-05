@@ -14,3 +14,5 @@ TextBlob – Lexicon-based sentiment analysis
 dotenv – Environment variable management
 Pandas – Data processing
 Matplotlib – Visualization
+
+Deploy Link:https://codealphasentimentanalysisnlp-h5ktv4cddsvmueshh2fmwh.streamlit.app/
